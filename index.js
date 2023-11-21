@@ -59,6 +59,26 @@ app.post('/api/notes', (request, response) => {
   response.json(note)
 })
 
+app.put('/api/notes/:id', (req, res) => {
+  const body = req.body
+
+  if (!body.content) {
+    return res.status(400).json({
+      error: 'content missing'
+    })
+  }
+
+  const id = Number(req.params.id)
+  const note = notes.find(note => note.id === id)
+
+  if (note) {
+    note.important = !note.important
+    res.json(note)
+  } else {
+    res.status(400).end()
+  }
+})
+
 app.get('/api/notes', (req, res) => {
   res.json(notes)
 })
